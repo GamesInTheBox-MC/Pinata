@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+
+    <artifactId>example-expansion</artifactId>
+    <version>1.0.0-SNAPSHOT</version>
+    <packaging>jar</packaging>
+
+    <name>ExampleExpansion</name>
+    <description>An Example expansion for GamesInTheBox</description>
+
+    <properties>
+        <project.mainClass>me.hsgamer.gamesinthebox.exampleexpansion.ExampleExpansion</project.mainClass>
+        <shade.attachedArtifact>true</shade.attachedArtifact>
+    </properties>
+
+    <!-- JITPACK -->
+    <repositories>
+        <repository>
+            <id>jitpack.io</id>
+            <url>https://jitpack.io</url>
+        </repository>
+    </repositories>
+    <parent>
+        <groupId>com.github.GamesInTheBox-MC</groupId>
+        <artifactId>ExpansionParent</artifactId>
+        <version>1.0.1</version>
+    </parent>
+    <dependencies>
+        <dependency>
+            <groupId>com.github.GamesInTheBox-MC</groupId>
+            <artifactId>GamesInTheBox</artifactId>
+            <version>1.2.0</version>
+            <scope>provided</scope>
+        </dependency>
+    </dependencies>
+
+    <!-- GITHUB PACKAGES -->
+<!--    <repositories>-->
+<!--        <repository>-->
+<!--            <id>github</id>-->
+<!--            <url>https://maven.pkg.github.com/GamesInTheBox-MC/ExpansionParent</url>-->
+<!--            <snapshots>-->
+<!--                <enabled>true</enabled>-->
+<!--            </snapshots>-->
+<!--        </repository>-->
+<!--    </repositories>-->
+<!--    <parent>-->
+<!--        <groupId>me.hsgamer.gamesinthebox</groupId>-->
+<!--        <artifactId>expansion-parent</artifactId>-->
+<!--        <version>1.0.1</version>-->
+<!--    </parent>-->
+<!--    <dependencies>-->
+<!--        <dependency>-->
+<!--            <groupId>me.hsgamer</groupId>-->
+<!--            <artifactId>games-in-the-box</artifactId>-->
+<!--            <version>1.2.0</version>-->
+<!--            <scope>provided</scope>-->
+<!--        </dependency>-->
+<!--    </dependencies>-->
+</project>
