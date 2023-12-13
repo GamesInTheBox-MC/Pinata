@@ -21,6 +21,7 @@ public class PinataFeature extends EntityFeature {
     private final SimpleGameArena arena;
     private List<String> nameTags = Collections.emptyList();
     private EntityType entityType = EntityType.SHEEP;
+    private boolean hasAI = true;
 
     public PinataFeature(SimpleGameArena arena) {
         this.arena = arena;
@@ -40,6 +41,12 @@ public class PinataFeature extends EntityFeature {
                 .flatMap(s -> Enums.getIfPresent(EntityType.class, s).toJavaUtil())
                 .filter(EntityType::isAlive)
                 .orElse(entityType);
+
+        hasAI = Optional.ofNullable(config.get("pinata.ai"))
+                .map(Objects::toString)
+                .map(String::toLowerCase)
+                .map(Boolean::parseBoolean)
+                .orElse(hasAI);
     }
 
     @Override
@@ -50,6 +57,7 @@ public class PinataFeature extends EntityFeature {
             entity.setCustomName(nameTag);
             entity.setCustomNameVisible(true);
         }
+        entity.setAI(hasAI);
         return entity;
     }
 
@@ -59,5 +67,9 @@ public class PinataFeature extends EntityFeature {
 
     public EntityType getEntityType() {
         return entityType;
+    }
+
+    public boolean isHasAI() {
+        return hasAI;
     }
 }

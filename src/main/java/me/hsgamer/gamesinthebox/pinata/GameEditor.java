@@ -25,6 +25,7 @@ public class GameEditor extends TemplateGameEditor {
     private final List<String> nameTags = new ArrayList<>();
     private EntityType entityType = EntityType.SHEEP;
     private boolean damageAsScore = false;
+    private boolean hasAI = true;
 
     public GameEditor(@NotNull TemplateGame game) {
         super(game);
@@ -134,6 +135,38 @@ public class GameEditor extends TemplateGameEditor {
                 return "<true/false>";
             }
         });
+        map.put("set-ai", new ValueAction<Boolean>() {
+            @Override
+            protected boolean performAction(@NotNull CommandSender sender, @NotNull Boolean value, String... args) {
+                hasAI = value;
+                return true;
+            }
+
+            @Override
+            protected int getValueArgCount() {
+                return 1;
+            }
+
+            @Override
+            protected Optional<Boolean> parseValue(@NotNull CommandSender sender, String... args) {
+                return Optional.of(Boolean.parseBoolean(args[0]));
+            }
+
+            @Override
+            protected @NotNull List<String> getValueArgs(@NotNull CommandSender sender, String... args) {
+                return Arrays.asList("true", "false");
+            }
+
+            @Override
+            public @NotNull String getDescription() {
+                return "Set whether the pinata has AI";
+            }
+
+            @Override
+            public @NotNull String getArgsUsage() {
+                return "<true/false>";
+            }
+        });
 
         return map;
     }
@@ -149,6 +182,7 @@ public class GameEditor extends TemplateGameEditor {
                 MessageUtils.sendMessage(sender, "&6&lPinata");
                 MessageUtils.sendMessage(sender, "&6Type: &f" + entityType.name());
                 MessageUtils.sendMessage(sender, "&6Damage As Score: &f" + damageAsScore);
+                MessageUtils.sendMessage(sender, "&6AI: &f" + hasAI);
                 MessageUtils.sendMessage(sender, "&6Name Tags: ");
                 nameTags.forEach(nameTag -> MessageUtils.sendMessage(sender, "&f- " + nameTag));
             }
@@ -158,6 +192,7 @@ public class GameEditor extends TemplateGameEditor {
                 nameTags.clear();
                 entityType = EntityType.SHEEP;
                 damageAsScore = false;
+                hasAI = true;
             }
 
             @Override
@@ -176,6 +211,9 @@ public class GameEditor extends TemplateGameEditor {
                 }
                 if (damageAsScore) {
                     map.put("damage-as-score", true);
+                }
+                if (!hasAI) {
+                    map.put("pinata.ai", false);
                 }
                 return map;
             }
@@ -199,6 +237,7 @@ public class GameEditor extends TemplateGameEditor {
 
         entityType = gameArena.getFeature(PinataFeature.class).getEntityType();
         damageAsScore = gameArena.getFeature(ListenerFeature.class).isDamageAsScore();
+        hasAI = gameArena.getFeature(PinataFeature.class).isHasAI();
 
         simpleBoundingFeatureEditor.migrate(gameArena.getFeature(SimpleBoundingFeature.class));
         simpleBoundingOffsetFeatureEditor.migrate(gameArena.getFeature(SimpleBoundingOffsetFeature.class));
