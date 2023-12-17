@@ -13,6 +13,7 @@ import org.bukkit.event.EventPriority;
 import org.bukkit.event.HandlerList;
 import org.bukkit.event.Listener;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
+import org.bukkit.event.entity.EntityDamageEvent;
 import org.bukkit.event.entity.EntityDeathEvent;
 
 import java.util.Optional;
@@ -60,20 +61,28 @@ public class ListenerFeature implements Feature, Listener {
 
     @EventHandler(priority = EventPriority.LOWEST, ignoreCancelled = true)
     public void onPinataDamage(EntityDamageByEntityEvent event) {
+        Entity damager = event.getDamager();
+        if (!(damager instanceof Player)) return;
+        Player player = (Player) damager;
+
         Entity entity = event.getEntity();
         if (!pinataFeature.contains(entity)) return;
-        event.setCancelled(true);
 
-        Entity damager = event.getDamager();
-        if (damager instanceof Player) {
-            Player player = (Player) damager;
+        event.setDamage(0);
 
-            if (damageAsScore) {
-                pointFeature.applyPoint(player.getUniqueId(), (int) event.getFinalDamage());
-            } else {
-                pointFeature.applyPoint(player.getUniqueId(), Pinata.POINT_HIT);
-            }
+        if (damageAsScore) {
+            pointFeature.applyPoint(player.getUniqueId(), (int) event.getFinalDamage());
+        } else {
+            pointFeature.applyPoint(player.getUniqueId(), Pinata.POINT_HIT);
         }
+    }
+
+    @EventHandler(priority = EventPriority.LOWEST, ignoreCancelled = true)
+    public void onPinataFallDamage(EntityDamageEvent event) {
+        if (event.getCause() != EntityDamageEvent.DamageCause.FALL) return;
+        if (!pinataFeature.contains(event.getEntity())) return;
+
+        event.setCancelled(true);
     }
 
     @EventHandler(priority = EventPriority.LOWEST, ignoreCancelled = true)
