@@ -23,7 +23,7 @@ public class ListenerFeature implements Feature, Listener {
     private final SimpleGameArena arena;
     private PinataFeature pinataFeature;
     private SimplePointFeature pointFeature;
-    private boolean damageAsScore = false;
+    private boolean damageAsPoint = false;
 
     public ListenerFeature(Pinata expansion, SimpleGameArena arena) {
         this.expansion = expansion;
@@ -41,7 +41,7 @@ public class ListenerFeature implements Feature, Listener {
         GameConfigFeature gameConfigFeature = arena.getFeature(GameConfigFeature.class);
 
         if (gameConfigFeature != null) {
-            damageAsScore = Optional.ofNullable(gameConfigFeature.getString("damage-as-score"))
+            damageAsPoint = Optional.ofNullable(gameConfigFeature.getString("damage-as-point"))
                     .map(Boolean::parseBoolean)
                     .orElse(false);
         }
@@ -55,8 +55,8 @@ public class ListenerFeature implements Feature, Listener {
         HandlerList.unregisterAll(this);
     }
 
-    public boolean isDamageAsScore() {
-        return damageAsScore;
+    public boolean isDamageAsPoint() {
+        return damageAsPoint;
     }
 
     @EventHandler(priority = EventPriority.LOWEST, ignoreCancelled = true)
@@ -70,7 +70,7 @@ public class ListenerFeature implements Feature, Listener {
 
         event.setDamage(0);
 
-        if (damageAsScore) {
+        if (damageAsPoint) {
             pointFeature.applyPoint(player.getUniqueId(), (int) event.getFinalDamage());
         } else {
             pointFeature.applyPoint(player.getUniqueId(), Pinata.POINT_HIT);

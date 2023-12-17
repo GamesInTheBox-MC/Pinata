@@ -24,7 +24,7 @@ public class GameEditor extends TemplateGameEditor {
     private final SimpleBoundingOffsetFeature.Editor simpleBoundingOffsetFeatureEditor = SimpleBoundingOffsetFeature.editor();
     private final List<String> nameTags = new ArrayList<>();
     private EntityType entityType = EntityType.SHEEP;
-    private boolean damageAsScore = false;
+    private boolean damageAsPoint = false;
     private boolean hasAI = true;
 
     public GameEditor(@NotNull TemplateGame game) {
@@ -103,10 +103,10 @@ public class GameEditor extends TemplateGameEditor {
                         .collect(Collectors.toList());
             }
         });
-        map.put("set-damage-as-score", new ValueAction<Boolean>() {
+        map.put("set-damage-as-point", new ValueAction<Boolean>() {
             @Override
             protected boolean performAction(@NotNull CommandSender sender, @NotNull Boolean value, String... args) {
-                damageAsScore = value;
+                damageAsPoint = value;
                 return true;
             }
 
@@ -127,7 +127,7 @@ public class GameEditor extends TemplateGameEditor {
 
             @Override
             public @NotNull String getDescription() {
-                return "Set whether to use damage as score";
+                return "Set whether to use damage as points";
             }
 
             @Override
@@ -181,7 +181,7 @@ public class GameEditor extends TemplateGameEditor {
             public void sendStatus(@NotNull CommandSender sender) {
                 MessageUtils.sendMessage(sender, "&6&lPinata");
                 MessageUtils.sendMessage(sender, "&6Type: &f" + entityType.name());
-                MessageUtils.sendMessage(sender, "&6Damage As Score: &f" + damageAsScore);
+                MessageUtils.sendMessage(sender, "&6Damage As Point: &f" + damageAsPoint);
                 MessageUtils.sendMessage(sender, "&6AI: &f" + hasAI);
                 MessageUtils.sendMessage(sender, "&6Name Tags: ");
                 nameTags.forEach(nameTag -> MessageUtils.sendMessage(sender, "&f- " + nameTag));
@@ -191,7 +191,7 @@ public class GameEditor extends TemplateGameEditor {
             public void reset(@NotNull CommandSender sender) {
                 nameTags.clear();
                 entityType = EntityType.SHEEP;
-                damageAsScore = false;
+                damageAsPoint = false;
                 hasAI = true;
             }
 
@@ -209,8 +209,8 @@ public class GameEditor extends TemplateGameEditor {
                 if (entityType != EntityType.SHEEP) {
                     map.put("pinata.type", entityType.name());
                 }
-                if (damageAsScore) {
-                    map.put("damage-as-score", true);
+                if (damageAsPoint) {
+                    map.put("damage-as-point", true);
                 }
                 if (!hasAI) {
                     map.put("pinata.ai", false);
@@ -236,7 +236,7 @@ public class GameEditor extends TemplateGameEditor {
         nameTags.addAll(gameArena.getFeature(PinataFeature.class).getNameTags());
 
         entityType = gameArena.getFeature(PinataFeature.class).getEntityType();
-        damageAsScore = gameArena.getFeature(ListenerFeature.class).isDamageAsScore();
+        damageAsPoint = gameArena.getFeature(ListenerFeature.class).isDamageAsPoint();
         hasAI = gameArena.getFeature(PinataFeature.class).isHasAI();
 
         simpleBoundingFeatureEditor.migrate(gameArena.getFeature(SimpleBoundingFeature.class));
