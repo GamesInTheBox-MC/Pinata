@@ -1,9 +1,8 @@
 package me.hsgamer.gamesinthebox.pinata;
 
-import com.google.common.base.Enums;
 import me.hsgamer.gamesinthebox.game.GameArena;
 import me.hsgamer.gamesinthebox.game.simple.action.BooleanAction;
-import me.hsgamer.gamesinthebox.game.simple.action.ValueAction;
+import me.hsgamer.gamesinthebox.game.simple.action.EnumAction;
 import me.hsgamer.gamesinthebox.game.simple.feature.SimpleBoundingFeature;
 import me.hsgamer.gamesinthebox.game.simple.feature.SimpleBoundingOffsetFeature;
 import me.hsgamer.gamesinthebox.game.template.TemplateGame;
@@ -17,8 +16,10 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.entity.EntityType;
 import org.jetbrains.annotations.NotNull;
 
-import java.util.*;
-import java.util.stream.Collectors;
+import java.util.ArrayList;
+import java.util.LinkedHashMap;
+import java.util.List;
+import java.util.Map;
 
 public class GameEditor extends TemplateGameEditor {
     private final SimpleBoundingFeature.Editor simpleBoundingFeatureEditor = SimpleBoundingFeature.editor(true);
@@ -71,7 +72,7 @@ public class GameEditor extends TemplateGameEditor {
                 return true;
             }
         });
-        map.put("set-pinata-type", new ValueAction<EntityType>() {
+        map.put("set-pinata-type", new EnumAction<EntityType>(EntityType.class) {
             @Override
             public @NotNull String getDescription() {
                 return "Set the pinata type";
@@ -84,24 +85,8 @@ public class GameEditor extends TemplateGameEditor {
             }
 
             @Override
-            protected int getValueArgCount() {
-                return 1;
-            }
-
-            @Override
-            protected Optional<EntityType> parseValue(@NotNull CommandSender sender, String... args) {
-                return Optional.ofNullable(args[0])
-                        .map(String::toUpperCase)
-                        .flatMap(s -> Enums.getIfPresent(EntityType.class, s).toJavaUtil())
-                        .filter(EntityType::isAlive);
-            }
-
-            @Override
-            protected @NotNull List<String> getValueArgs(@NotNull CommandSender sender, String... args) {
-                return Arrays.stream(EntityType.values())
-                        .filter(EntityType::isAlive)
-                        .map(Enum::name)
-                        .collect(Collectors.toList());
+            protected boolean isValueAllowed(@NotNull EntityType entityType) {
+                return entityType.isAlive();
             }
         });
         map.put("set-damage-as-point", new BooleanAction() {
