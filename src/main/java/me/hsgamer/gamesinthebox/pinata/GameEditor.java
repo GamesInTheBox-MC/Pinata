@@ -2,6 +2,7 @@ package me.hsgamer.gamesinthebox.pinata;
 
 import com.google.common.base.Enums;
 import me.hsgamer.gamesinthebox.game.GameArena;
+import me.hsgamer.gamesinthebox.game.simple.action.BooleanAction;
 import me.hsgamer.gamesinthebox.game.simple.action.ValueAction;
 import me.hsgamer.gamesinthebox.game.simple.feature.SimpleBoundingFeature;
 import me.hsgamer.gamesinthebox.game.simple.feature.SimpleBoundingOffsetFeature;
@@ -103,7 +104,7 @@ public class GameEditor extends TemplateGameEditor {
                         .collect(Collectors.toList());
             }
         });
-        map.put("set-damage-as-point", new ValueAction<Boolean>() {
+        map.put("set-damage-as-point", new BooleanAction() {
             @Override
             protected boolean performAction(@NotNull CommandSender sender, @NotNull Boolean value, String... args) {
                 damageAsPoint = value;
@@ -111,31 +112,11 @@ public class GameEditor extends TemplateGameEditor {
             }
 
             @Override
-            protected int getValueArgCount() {
-                return 1;
-            }
-
-            @Override
-            protected Optional<Boolean> parseValue(@NotNull CommandSender sender, String... args) {
-                return Optional.of(Boolean.parseBoolean(args[0]));
-            }
-
-            @Override
-            protected @NotNull List<String> getValueArgs(@NotNull CommandSender sender, String... args) {
-                return Arrays.asList("true", "false");
-            }
-
-            @Override
             public @NotNull String getDescription() {
                 return "Set whether to use damage as points";
             }
-
-            @Override
-            public @NotNull String getArgsUsage() {
-                return "<true/false>";
-            }
         });
-        map.put("set-ai", new ValueAction<Boolean>() {
+        map.put("set-ai", new BooleanAction() {
             @Override
             protected boolean performAction(@NotNull CommandSender sender, @NotNull Boolean value, String... args) {
                 hasAI = value;
@@ -143,28 +124,8 @@ public class GameEditor extends TemplateGameEditor {
             }
 
             @Override
-            protected int getValueArgCount() {
-                return 1;
-            }
-
-            @Override
-            protected Optional<Boolean> parseValue(@NotNull CommandSender sender, String... args) {
-                return Optional.of(Boolean.parseBoolean(args[0]));
-            }
-
-            @Override
-            protected @NotNull List<String> getValueArgs(@NotNull CommandSender sender, String... args) {
-                return Arrays.asList("true", "false");
-            }
-
-            @Override
             public @NotNull String getDescription() {
                 return "Set whether the pinata has AI";
-            }
-
-            @Override
-            public @NotNull String getArgsUsage() {
-                return "<true/false>";
             }
         });
 
