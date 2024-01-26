@@ -68,13 +68,13 @@ public class ListenerFeature implements Feature, Listener {
         Entity entity = event.getEntity();
         if (!pinataFeature.contains(entity)) return;
 
-        event.setDamage(0);
-
         if (damageAsPoint) {
             pointFeature.applyPoint(player.getUniqueId(), (int) event.getFinalDamage());
         } else {
             pointFeature.applyPoint(player.getUniqueId(), Pinata.POINT_HIT);
         }
+
+        event.setDamage(0);
     }
 
     @EventHandler(priority = EventPriority.LOWEST, ignoreCancelled = true)
